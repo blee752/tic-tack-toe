@@ -16,14 +16,30 @@
 
     //this object should control what the players see, ie adjust symbol on board tile
     const displayController = (() => {
+        //what does this object need to control?
+        //pointers to the game board
+        //players
+
         function reset() {
             //reset apperance
         }
     })();
 
     //self explainatory, factory for player objects. should contain turns taken?, winner status, symbol
-    const Player = () => {
+    const Player = (position) => {
+        let turns = 0;
+        let winner = false;
+        let symbol; 
+        if(position === 1){
+            symbol = 'x';
+        }
+        else {
+            symbol = 'o';
+        }
 
+        const getSymbol = () => {
+            
+        }
     };
 
     console.log('this is invoked on start');

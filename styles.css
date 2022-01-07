@@ -9,4 +9,64 @@ body {
     display:flex;
     flex-direction: column;
     height: 100%;
-}/*  */
+}
+
+.title {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board {
+    display:flex;
+    flex:1 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+
+    display: flex;
+    text-align: center;
+    width: 100%;
+    flex:1 auto;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.footer h3 {
+    margin: 0;
+}
+
+
+.grid-container {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    text-align: center;
+}
+
+.boardTile {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+}
+
+.remove-left {
+    border-left: 1px solid transparent;
+}
+
+.remove-top {
+    border-top: 1px solid transparent;
+}
+.remove-right {
+    border-right: 1px solid transparent;
+}
+.remove-bottom {
+    border-bottom: 1px solid transparent;
+}
+
+.boardTile p {
+    font-size: 32px;
+}
