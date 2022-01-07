@@ -1,20 +1,34 @@
 //if its one of, make it a module
 //if you need more than one, its a factory constuctor
 
+(function () {
 
-const gameObject = (() => {
-    const gameBoard = [];
+
+    //i think this object should have the logic to check winner, reset, add the event listeners etc
+    const gameObject = (() => {
+        const gameBoard = [[1,2,3],[4,5,6],[7,8,9]];
+        /* gameboard: 
+            1   2   3
+            4   5   6
+            7   8   9 */
+            //?
+    })();
+
+    //this object should control what the players see, ie adjust symbol on board tile
+    const displayController = (() => {
+        function reset() {
+            //reset apperance
+        }
+    })();
+
+    //self explainatory, factory for player objects. should contain turns taken?, winner status, symbol
+    const Player = () => {
+
+    };
+
+    console.log('this is invoked on start');
+
 })();
-
-const displayController = (() => {
-
-})();
-
-const Player = () => {
-
-};
-
-
 
 
 /* const Player = (name, level) => {
