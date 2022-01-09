@@ -115,8 +115,17 @@
         const winCheck = (currPlayer) => {
             const marker = currPlayer.getSymbol();
             const gameBoard = gameObject.getBoard();
+            //checks all rows for a win
             if((gameBoard[0]=== marker && gameBoard[1]===marker && gameBoard[2]===marker) || (gameBoard[3]=== marker && gameBoard[4]===marker && gameBoard[5]===marker) || (gameBoard[6]=== marker && gameBoard[7]===marker && gameBoard[8]===marker)){
-                console.log(`${currPlayer.getName()} is the winner!`);
+                console.log(`${currPlayer.getName()} is the winner with a straight row!`);
+            }
+            //checks all columns for a win
+            else if ((gameBoard[0]=== marker && gameBoard[3]===marker && gameBoard[6]===marker) || (gameBoard[1]=== marker && gameBoard[4]===marker && gameBoard[7]===marker) || (gameBoard[2]=== marker && gameBoard[5]===marker && gameBoard[8]===marker)) {
+                console.log(`${currPlayer.getName()} is the winner with a straight column!`);
+            }
+            //checks diagonals for a win
+            else if ((gameBoard[0]=== marker && gameBoard[4]===marker && gameBoard[8]===marker) || (gameBoard[2]=== marker && gameBoard[4]===marker && gameBoard[6]===marker)) {
+                console.log(`${currPlayer.getName()} is the winner with a diagonal!`);
             }
         }
 
@@ -168,8 +177,6 @@
     })();
 
     displayController.initGame();
-
-    console.log('this is invoked on start');
 })();
 
 
