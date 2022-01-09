@@ -3,46 +3,86 @@
 
 (function () {
 
-    //this object should control what the players see, ie adjust symbol on board tile
-    const displayController = (() => {
-        //what does this object need to control?
-        //pointers to the game board
-        //players
-        const boardTiles = document.querySelectorAll('.boardTile');
-        console.log(boardTiles);
-        const reset = () => {
-            //reset apperance
-            boardTiles.forEach(tile => {
-                console.log(tile.lastElementChild.innerText);
-                tile.lastElementChild.innerText = '';
-                if(tile.className.includes('filled')){
-                    tile.classList.remove('filled');
+    //need to remake this the board. Page needs to have the board rendered from this
+    const gameObject = (() => {
+        const gameBoard = ['', '', '', '', '', '', '', '', '']
+
+        const render = () => {
+            const board = document.querySelector('.grid-container');
+            for (i = 0; i < 9; i++) {
+                let tile = document.createElement('button');
+                tile.innerText = gameBoard[i];
+                tile.dataset.position = i;
+
+                if(gameBoard[i] !== ''){
+                    tile.dataset.filled = true;
                 }
-            })
+                else tile.dataset.filled = false;
+
+                
+                tile.className = 'boardTile';
+                if (i === 0 || i === 6 || i === 3) {
+                    tile.classList.add('right');
+                }
+                else if (i === 2 || i === 5 || i === 8) {
+                    tile.classList.add('left');
+                }
+                if (i === 3 || i === 4 || i === 5) {
+                    tile.classList.add('up', 'down');
+                }
+                board.appendChild(tile);
+            }
         }
 
-        const setSymbol = (player, event) => {
-            event.target.lastElementChild.innerText = player.getSymbol();
+        const reset = () => {
+            const board = document.querySelector('.grid-container');
+            board.replaceChildren();
+            render();
         }
-        return {
-            reset, setSymbol
-        };
+
+        //send the e.target element ?
+        const adjustTile = (tile) => {
+            tile.classList.add = 'filled'
+        }
+
+        const getBoard = () => gameBoard;
+        const restartGame = () => {
+            for (i = 0; i < gameBoard.length; i++) {
+                gameBoard[i] = '';
+            }
+            render();
+        }
+        const setBoard = (index, marker) => {
+            gameBoard[index] = marker;
+            console.log(gameBoard);
+            reset();
+        }
+        return { render, setBoard, reset, restartGame, getBoard }
     })();
 
+    /* game logic/steps?
+        track which turn it is 
+        on click, add player's marker into the gameboard
+        re render the board to show the changes
+        increment turn, 
+            if a player as done 3 or more turns, check if a win has happened
+            if so, declare winner
+        check if turn is 9. If turn is 9 and no win has happened, delcare tie    
+        switch current player
+        repeat
+            */
+
+
+
+
     //self explainatory, factory for player objects. should contain turns taken?, winner status, symbol
-    const Player = (playernum) => {
+    const Player = (name, marker) => {
+        let userName = name;
         let turnsTaken = 0;
-        let currTurn;
+        let currTurn = false;
         let winner = false;
-        let symbol;
-        if (playernum === 1) {
-            symbol = 'x';
-            currTurn = true;
-        }
-        else {
-            symbol = 'o';
-            currTurn = false;
-        }
+        let symbol = marker
+
 
         const getSymbol = () => symbol;
         const getTurn = () => turnsTaken;
@@ -54,80 +94,80 @@
 
         const getCurr = () => currTurn;
         const setCurr = () => {
-            console.log('before:' +currTurn);
             currTurn = !currTurn;
-            console.log('after:' +currTurn);
-
         }
 
         const setWinner = () => winner = true;
         const getStatus = () => winner;
 
-        
+        const getName = () => userName;
 
-        return { getSymbol, getTurn, incrementTurn, setWinner, getStatus, getCurr, setCurr };
+
+        return { getSymbol, getTurn, incrementTurn, setWinner, getStatus, getCurr, setCurr, getName};
     };
 
-    //i think this object should have the logic to check winner, reset, add the event listeners etc
-    const gameObject = (() => {
-        const gameBoard = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-        /* gameboard: 
-            1   2   3
-            4   5   6
-            7   8   9 */
-        //?
+    //redo this as the game controller
+    const displayController = (() => {
+        //what does this object need to control?
+        //pointers to the game board
+        //players
 
-        //dom pointers
-        const board = document.querySelector('.grid-container');
-
-
-        const winCheck = (player) => {
-            //do something to check if someone won
-            player.setWinner();
-
+        const winCheck = (currPlayer) => {
+            const marker = currPlayer.getSymbol();
+            const gameBoard = gameObject.getBoard();
+            if((gameBoard[0]=== marker && gameBoard[1]===marker && gameBoard[2]===marker) || (gameBoard[3]=== marker && gameBoard[4]===marker && gameBoard[5]===marker) || (gameBoard[6]=== marker && gameBoard[7]===marker && gameBoard[8]===marker)){
+                console.log(`${currPlayer.getName()} is the winner!`);
+            }
         }
 
-
-
-        /* Whats needed for this game?
-                1. Players to be setup
-                2. event listeners for on click 
-                3. function checking for winners
-                    3a. if won, disable event listeners and pop up modal
-                4. event listeners for reset*/
+        /* what needs to be there for the game to work?
+                listen for button on click to set player marker
+                know which player's turn it is currently
+                check for win or tie */
         const initGame = () => {
-            const player1 = Player(1);
-            const player2 = Player(2);
+            gameObject.render();
+            const board = document.querySelector('.grid-container');
             let currPlayer;
+            const player1 = Player('p1', 'x');
+            const player2 = Player('p2', 'o');
+
+            player1.setCurr();
+            currPlayer = player1;
+            board.addEventListener('click', event => {
+                if (event.target.className.includes('boardTile') && event.target.dataset.filled !== 'true') {
+                    gameObject.setBoard(event.target.dataset.position, currPlayer.getSymbol());
+                    console.log(`Turn before update ${currPlayer.getTurn()}`)
+                    currPlayer.incrementTurn();
 
 
-            board.addEventListener('click', (event) => {
-                if(event.target.className.includes('boardTile') && (!event.target.className.includes('filled'))){
-                    if(player1.getCurr() === true){
-                        currPlayer = player1;
+                    if(currPlayer.getTurn() >= 3){
+                        winCheck(currPlayer);
                     }
-                    else currPlayer = player2;
-                    displayController.setSymbol(currPlayer, event);
-                    event.target.classList.add('filled')
-                    if(currPlayer === player1){
-                        currPlayer.setCurr();
-                        currPlayer = player2;
-                        currPlayer.setCurr();
+
+                    if (currPlayer === player1) {
+                        currPlayer = changeTurn(currPlayer, player2);
                     }
-                    else {
-                        currPlayer.setCurr();
-                        currPlayer = player1;
-                        currPlayer.setCurr();
-                    }
+                    else currPlayer = changeTurn(currPlayer, player1);
+
                 }
+
             })
 
         }
-        return {initGame}
+
+        const changeTurn = (currPlayer, nextPlayer) => {
+            currPlayer.setCurr();
+            currPlayer = nextPlayer;
+            currPlayer.setCurr();
+            return currPlayer;
+        }
+
+
+
+        return { initGame }
     })();
 
-gameObject.initGame();
-
+    displayController.initGame();
 
     console.log('this is invoked on start');
 })();
