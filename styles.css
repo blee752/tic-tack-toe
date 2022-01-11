@@ -19,9 +19,11 @@ body {
 
 .board {
     display:flex;
-    flex:1 auto;
+    flex:1 0%;
     justify-content: center;
     align-items: center;
+    margin-top: 5%;
+    margin-bottom: 20px;
 }
 
 .footer {
@@ -73,4 +75,70 @@ body {
 
 .boardTile p {
     font-size: 32px;
+}
+
+.reset {
+    padding:15px;
+    text-align: center;
+    background-color: greenyellow;
+    color: black;
+    border: 0px;
+    border-radius: 5px;
+}
+
+.reset:hover {
+    background-color: rgb(120, 179, 33);
+}
+
+.reset:active {
+    background-color: rgb(61, 90, 18);
+    transform: translateY(4px);
+}
+
+.reset-container {
+    text-align: center;
+}
+
+.page2 {
+    display:none;
+}
+
+.page1 {
+    display:flex;
+    flex: 1 auto;
+
+    flex-direction: column;
+
+}
+
+.pg1-Main {
+    display:flex;
+    justify-content: space-evenly;
+    padding-top: 10%;
+}
+
+.submit {
+    display:flex;
+    justify-content:center;
+}
+
+.ui {
+    text-align: center;
+}
+
+.fab {
+    font-size: 30px;
+    transition: transform 0.3s ease-in-out;
+}
+.fa-github:hover {
+    transform: rotate(360deg) scale(1.2);
+  }
+a {
+    outline: 0;
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;
 }
