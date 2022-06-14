@@ -1,6 +1,7 @@
 # tic-tack-toe #
 
 [Live Page](https://blee752.github.io/tic-tack-toe/index.html)
+
 The Odin Project Full Stack Javascript project #2
 ## Description ## 
 
